@@ -346,15 +346,17 @@
             animation: pulse 2s ease-in-out infinite;
         }
 
-        .powered-by {
+        .sponsor-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 12px;
             color: var(--medium-gray);
         }
 
-        .powered-by a {
-            color: var(--mit-red);
-            text-decoration: none;
-            font-weight: 600;
+        .sponsor-badge img {
+            height: 28px;
+            width: auto;
         }
 
         .ask-body {
@@ -717,7 +719,10 @@
         <div class="ask-container">
             <div class="ask-header">
                 <h2>What would you like to know?</h2>
-                <span class="powered-by">Powered by <a href="https://askmybrand.ai" target="_blank">Ask My Brand</a></span>
+                <div class="sponsor-badge">
+                    <span>Sponsored by</span>
+                    <img src="Workato-logo-1000.png" alt="Workato" />
+                </div>
             </div>
             <div class="ask-body">
                 <!-- Ask My Brand Widget Container -->
