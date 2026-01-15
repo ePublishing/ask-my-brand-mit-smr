@@ -8,6 +8,92 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Password Protection Overlay */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(-45deg, #1a1a1a, #2d2d2d, var(--mit-red-dark), var(--mit-red));
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 48px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .password-box h2 {
+            font-family: 'Source Serif Pro', Georgia, serif;
+            font-size: 24px;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+        }
+
+        .password-box p {
+            color: var(--medium-gray);
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .password-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .password-box input:focus {
+            outline: none;
+            border-color: var(--mit-red);
+        }
+
+        .password-box button {
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--mit-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .password-box button:hover {
+            background: var(--mit-red-dark);
+        }
+
+        .password-box .error {
+            color: var(--mit-red);
+            font-size: 14px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.unlocked {
+            display: block;
+        }
+
         :root {
             --mit-red: #ed1b2e;
             --mit-red-dark: #c9162a;
@@ -695,6 +781,18 @@
     </style>
 </head>
 <body>
+    <!-- Password Protection -->
+    <div class="password-overlay" id="passwordOverlay">
+        <div class="password-box">
+            <h2>Protected Content</h2>
+            <p>Please enter the password to view this demo.</p>
+            <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key==='Enter')checkPassword()">
+            <button onclick="checkPassword()">Access Demo</button>
+            <p class="error" id="errorMsg">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <div class="page-content" id="pageContent">
     <header>
         <div class="header-top">
             <div class="header-top-content">
@@ -855,5 +953,28 @@
             <div class="footer-copyright">© 2026 MIT Sloan Management Review. All rights reserved.</div>
         </div>
     </footer>
+    </div><!-- end page-content -->
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPassword = 'increaserevenue2026';
+            
+            if (password === correctPassword) {
+                document.getElementById('passwordOverlay').style.display = 'none';
+                document.getElementById('pageContent').classList.add('unlocked');
+                sessionStorage.setItem('demoAccess', 'granted');
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        // Check if already authenticated this session
+        if (sessionStorage.getItem('demoAccess') === 'granted') {
+            document.getElementById('passwordOverlay').style.display = 'none';
+            document.getElementById('pageContent').classList.add('unlocked');
+        }
+    </script>
 </body>
 </html>
